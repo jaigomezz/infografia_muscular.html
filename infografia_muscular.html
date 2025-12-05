@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía de Alimentación: Ganancia Muscular</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- 
+    PALETTE: Vibrant Energy
+    Primary (Orange): #FF5722
+    Secondary (Blue): #2979FF
+    Accent (Green): #00E676
+    Background: #FAFAFA
+    Text: #212121
+    -->
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #FAFAFA;
+            color: #212121;
+        }
+        h1, h2, h3 {
+            font-family: 'Montserrat', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #FF5722, #FF9100);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+    <!-- 
+    Analysis of Source Material:
+    The source material is a structured meal guide for muscle gain focusing on caloric surplus and high protein.
+    Structure: Breakfast, Lunch, Snack, Dinner. Two options per meal.
+    Key Themes: Whole foods, specific ingredient swaps (Venezuelan cheese, ham, oatmeal, arepas), high density.
+    
+    Narrative Plan:
+    1. Hook: "The Formula" - Briefly explain the surplus + protein concept using a visualization.
+    2. Meal Journey: Walk through the day (Breakfast -> Dinner).
+    3. The Battle: Compare Option 1 vs Option 2 using charts to show nutrient profiles (Protein vs Carbs vs Fats).
+    4. Call to Action: The TikTok engagement question.
+    
+    Visualization Choices (NO SVG, NO MERMAID):
+    1. Intro: Doughnut Chart. Goal: Inform/Composition. Shows the ideal calorie breakdown (Carbs/Protein/Fat).
+    2. Breakfast: Radar Chart. Goal: Compare. "Sweet vs Savory" profile and nutrient balance.
+    3. Lunch: Bar Chart. Goal: Compare. Protein content vs Satiety levels.
+    4. Snack: Polar Area Chart. Goal: Relationships. Comparing Calorie density vs Volume.
+    5. Dinner: Horizontal Bar Chart. Goal: Compare. Recovery stats.
+    -->
+</head>
+<body class="overflow-x-hidden">
+
+    <!-- Header Section -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <span class="text-3xl">💪</span>
+                <h1 class="text-xl md:text-2xl font-black tracking-tight text-gray-800">GUÍA DE <span class="text-[#FF5722]">GANANCIA MUSCULAR</span></h1>
+            </div>
+            <div class="text-sm font-bold text-[#2979FF] tracking-wider">EDICIÓN TIKTOK: @jai.gomezz</div>
+        </div>
+    </header>
+
+    <!-- Hero / Intro -->
+    <section class="container mx-auto px-4 py-12 text-center">
+        <h2 class="text-4xl md:text-6xl font-black mb-4">La Fórmula del <span class="gradient-text">Crecimiento</span></h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+            Para ganar masa muscular siendo delgada/o, la regla de oro es simple: 
+            <strong>Superávit Calórico + Proteína Constante</strong>. 
+            Aquí tienes tu mapa de ruta diario con opciones deliciosas e integrales.
+        </p>
+
+        <!-- Macro Split Chart Section -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div>
+                <h3 class="text-2xl font-bold mb-4 text-[#FF5722]">Tu Combustible Diario</h3>
+                <p class="text-gray-600 mb-4">
+                    No se trata solo de comer mucho, se trata de comer con propósito. Esta distribución aproximada asegura que tengas energía para entrenar y nutrientes para reparar.
+                </p>
+                <ul class="space-y-3 text-left">
+                    <li class="flex items-center">
+                        <span class="w-4 h-4 rounded-full bg-[#FF5722] mr-3"></span>
+                        <span class="font-bold">Carbohidratos:</span> Energía para entrenar duro (Avena, Arroz, Pasta).
+                    </li>
+                    <li class="flex items-center">
+                        <span class="w-4 h-4 rounded-full bg-[#2979FF] mr-3"></span>
+                        <span class="font-bold">Proteínas:</span> Bloques para construir músculo (Pollo, Carne, Huevos).
+                    </li>
+                    <li class="flex items-center">
+                        <span class="w-4 h-4 rounded-full bg-[#00E676] mr-3"></span>
+                        <span class="font-bold">Grasas:</span> Regulación hormonal (Aguacate, Nueces, Yemas).
+                    </li>
+                </ul>
+            </div>
+            <div class="chart-container" style="height: 250px;">
+                <canvas id="macroChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- BREAKFAST SECTION -->
+    <section class="bg-gray-50 py-16 border-t border-gray-200">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center mb-8">
+                <span class="text-4xl mr-4">☀️</span>
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800">Desayunos</h2>
+                    <p class="text-[#2979FF] font-medium">Alto impacto calórico para iniciar el día</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Breakfast Cards -->
+                <div class="space-y-6">
+                    <!-- Option 1 -->
+                    <div class="glass-card p-6 rounded-xl shadow-sm border-l-4 border-[#FF5722] hover:shadow-md transition-shadow">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold text-gray-800">Opción 1: Avena Power</h3>
+                            <span class="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full font-bold">~30g Proteína</span>
+                        </div>
+                        <p class="text-gray-600 mb-3">La combinación clásica de carbohidratos complejos y proteína de absorción mixta.</p>
+                        <ul class="text-sm space-y-1 text-gray-700">
+                            <li>🥣 **1 taza** avena cocida (leche entera)</li>
+                            <li>🧀 **1 trozo** de Queso duro venezolano o Mozzarella</li>
+                            <li>🍌 **1** Plátano mediano en rodajas</li>
+                        </ul>
+                    </div>
+
+                    <!-- Option 2 -->
+                    <div class="glass-card p-6 rounded-xl shadow-sm border-l-4 border-[#2979FF] hover:shadow-md transition-shadow">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold text-gray-800">Opción 2: Omelette & Tostada</h3>
+                            <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full font-bold">~28g Proteína</span>
+                        </div>
+                        <p class="text-gray-600 mb-3">Desayuno salado ideal para quienes prefieren empezar con algo sólido y sabroso.</p>
+                        <ul class="text-sm space-y-1 text-gray-700">
+                            <li>🍳 Omelette (**3 huevos** + queso + jamón)</li>
+                            <li>🍞 **2 rebanadas** pan integral</li>
+                            <li>🥑 **1/4** Aguacate (o 2 cdas)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Breakfast Chart -->
+                <div class="bg-white rounded-xl shadow-md p-6 flex flex-col justify-center">
+                    <h4 class="text-center font-bold text-gray-500 mb-4 uppercase text-sm">Perfil Nutricional Comparativo</h4>
+                    <div class="chart-container">
+                        <canvas id="breakfastChart"></canvas>
+                    </div>
+                    <p class="text-center text-xs text-gray-400 mt-4 italic">Comparación basada en densidad de nutrientes y perfil de sabor.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LUNCH SECTION -->
+    <section class="bg-white py-16">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center mb-8 justify-end lg:justify-start">
+                <div class="text-right lg:text-left">
+                    <h2 class="text-3xl font-bold text-gray-800">Almuerzos</h2>
+                    <p class="text-[#00E676] font-medium">Combustible pesado para mitad del día</p>
+                </div>
+                <span class="text-4xl ml-4">🥗</span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:flex-row-reverse">
+                <!-- Lunch Chart (Left on Desktop) -->
+                <div class="bg-gray-50 rounded-xl shadow-inner p-6 flex flex-col justify-center order-2 lg:order-1">
+                    <h4 class="text-center font-bold text-gray-500 mb-4 uppercase text-sm">Distribución de Energía (Estimada)</h4>
+                    <div class="chart-container">
+                        <canvas id="lunchChart"></canvas>
+                    </div>
+                    <p class="text-center text-xs text-gray-400 mt-4 italic">El pollo aporta proteína magra, mientras la carne roja aporta creatina y zinc naturales.</p>
+                </div>
+
+                <!-- Lunch Cards -->
+                <div class="space-y-6 order-1 lg:order-2">
+                    <!-- Option 1 -->
+                    <div class="glass-card p-6 rounded-xl shadow-sm border-r-4 border-[#00E676] hover:shadow-md transition-shadow">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold text-gray-800">Opción 1: El Clásico Fitness</h3>
+                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-bold">~45g Proteína</span>
+                        </div>
+                        <p class="text-gray-600 mb-3">La combinación de legumbres y arroz crea un perfil de aminoácidos completo adicional al pollo.</p>
+                        <ul class="text-sm space-y-1 text-gray-700">
+                            <li>🍗 **Puño cerrado** Pechuga de Pollo</li>
+                            <li>🍚 **1 taza** Arroz Integral</li>
+                            <li>🥘 **1 taza** Lentejas/Frijoles</li>
+                        </ul>
+                    </div>
+
+                    <!-- Option 2 -->
+                    <div class="glass-card p-6 rounded-xl shadow-sm border-r-4 border-[#FF5722] hover:shadow-md transition-shadow">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold text-gray-800">Opción 2: Potencia Criolla</h3>
+                            <span class="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full font-bold">~40g Proteína</span>
+                        </div>
+                        <p class="text-gray-600 mb-3">La yuca es una fuente excelente de carbohidratos densos, ideal para días de pierna.</p>
+                        <ul class="text-sm space-y-1 text-gray-700">
+                            <li>🥩 **Puño cerrado** Carne Asada/Bistec</li>
+                            <li>🥔 **2 Puños** grandes de Yuca (Sancochada/Frita)</li>
+                            <li>🌿 Toque de Aceite</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SNACK SECTION -->
+    <section class="bg-[#212121] py-16 text-white">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-center mb-10">
+                <span class="text-4xl mr-4">🥤</span>
+                <h2 class="text-3xl font-bold">Meriendas / Snacks</h2>
+                <span class="text-4xl ml-4">🥜</span>
+            </div>
+            <p class="text-center text-gray-400 mb-10 max-w-xl mx-auto">Aquí es donde muchos fallan. Estos snacks están diseñados para añadir calorías de calidad sin sentir pesadez extrema.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Snack 1 -->
+                <div class="bg-gray-800 rounded-2xl p-6 border border-gray-700 transform hover:-translate-y-1 transition-transform duration-300">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold text-[#FF5722]">Batido "Gainer" Casero</h3>
+                        <span class="text-2xl">~20g Proteína</span>
+                    </div>
+                    <div class="space-y-2 mb-6">
+                        <div class="flex items-center text-sm text-gray-300">
+                            <span class="w-2 h-2 rounded-full bg-[#FF5722] mr-2"></span> **1 taza** Leche Entera + **3 cdas** Avena
+                        </div>
+                        <div class="flex items-center text-sm text-gray-300">
+                            <span class="w-2 h-2 rounded-full bg-[#FF5722] mr-2"></span> **2 cdas** Mantequilla de Maní
+                        </div>
+                        <div class="flex items-center text-sm text-gray-300">
+                            <span class="w-2 h-2 rounded-full bg-[#FF5722] mr-2"></span> **1** Plátano Congelado
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 rounded-lg p-3">
+                         <h5 class="text-xs text-gray-500 uppercase font-bold mb-2 text-center">Densidad Calórica</h5>
+                         <div class="w-full bg-gray-700 rounded-full h-2.5">
+                            <div class="bg-[#FF5722] h-2.5 rounded-full" style="width: 95%"></div>
+                          </div>
+                          <p class="text-right text-xs text-[#FF5722] mt-1 font-bold">Muy Alta</p>
+                    </div>
+                </div>
+
+                <!-- Snack 2 -->
+                <div class="bg-gray-800 rounded-2xl p-6 border border-gray-700 transform hover:-translate-y-1 transition-transform duration-300">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold text-[#2979FF]">Bowl de Yogur Pro</h3>
+                        <span class="text-2xl">~25g Proteína</span>
+                    </div>
+                    <div class="space-y-2 mb-6">
+                        <div class="flex items-center text-sm text-gray-300">
+                            <span class="w-2 h-2 rounded-full bg-[#2979FF] mr-2"></span> **1 taza** Yogur Griego Entero
+                        </div>
+                        <div class="flex items-center text-sm text-gray-300">
+                            <span class="w-2 h-2 rounded-full bg-[#2979FF] mr-2"></span> Miel al gusto
+                        </div>
+                        <div class="flex items-center text-sm text-gray-300">
+                            <span class="w-2 h-2 rounded-full bg-[#2979FF] mr-2"></span> **Puñado** Almendras/Nueces
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 rounded-lg p-3">
+                        <h5 class="text-xs text-gray-500 uppercase font-bold mb-2 text-center">Aporte de Probióticos</h5>
+                        <div class="w-full bg-gray-700 rounded-full h-2.5">
+                           <div class="bg-[#2979FF] h-2.5 rounded-full" style="width: 85%"></div>
+                         </div>
+                         <p class="text-right text-xs text-[#2979FF] mt-1 font-bold">Alto</p>
+                   </div>
+                </div>
+            </div>
+            
+            <!-- Snack Chart -->
+            <div class="mt-10 bg-gray-800 p-4 rounded-xl max-w-lg mx-auto">
+                <h4 class="text-center font-bold text-gray-400 mb-2 uppercase text-xs">Comparativa de Digestibilidad</h4>
+                <div class="chart-container" style="height: 200px;">
+                    <canvas id="snackChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DINNER SECTION -->
+    <section class="bg-gray-50 py-16">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center mb-8">
+                <span class="text-4xl mr-4">🌙</span>
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800">Cenas</h2>
+                    <p class="text-[#FF5722] font-medium">Recuperación nocturna y reparación</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Dinner Options -->
+                <div class="space-y-8">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 h-12 w-12 rounded-full bg-orange-100 flex items-center justify-center text-2xl">🍝</div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-bold text-gray-800">Pasta Boloñesa Fit</h3>
+                            <p class="text-gray-600 text-sm mt-1">
+                                **Puño** de Carne magra + **1.5 tazas** Pasta integral + Salsa tomate.
+                                <br><span class="text-xs text-orange-600 font-bold">~40g Proteína. Ideal para reponer glucógeno.</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center text-2xl">🫓</div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-bold text-gray-800">Arepa "Pepiada" Simple</h3>
+                            <p class="text-gray-600 text-sm mt-1">
+                                **1** Arepa mediana + **2** Huevos revueltos + Aguacate + Queso.
+                                <br><span class="text-xs text-blue-600 font-bold">~25g Proteína. Grasas buenas para la noche.</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dinner Chart -->
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <h4 class="text-center font-bold text-gray-500 mb-4 uppercase text-sm">Satisfacción y Recuperación</h4>
+                    <div class="chart-container">
+                        <canvas id="dinnerChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer / Interaction -->
+    <footer class="bg-gradient-to-r from-[#FF5722] to-[#FF9100] py-12 text-white text-center">
+        <div class="container mx-auto px-4">
+            <h3 class="text-3xl font-black mb-6">¿Cuál es tu elección?</h3>
+            <p class="text-xl mb-8 opacity-90">De estas 8 opciones...</p>
+            
+            <div class="bg-white/20 backdrop-blur-md rounded-xl p-8 max-w-2xl mx-auto border border-white/30">
+                <p class="text-2xl font-bold mb-4">"¿Cuál es tu favorita para probar mañana?"</p>
+                <div class="inline-block bg-white text-[#FF5722] font-bold py-3 px-8 rounded-full shadow-lg animate-bounce">
+                    ¡Déjalo en los comentarios! 👇
+                </div>
+            </div>
+            
+            <p class="mt-10 text-sm opacity-70">Guía Informativa de Ganancia Muscular • Diseño SPA Infográfico</p>
+        </div>
+    </footer>
+
+    <!-- CHART JS LOGIC -->
+    <script>
+        // Configuration for Fonts and Colors
+        Chart.defaults.font.family = "'Roboto', sans-serif";
+        Chart.defaults.color = '#666';
+        
+        // Helper: Label Wrapping Logic (Strict >16 char requirement)
+        function wrapLabel(str) {
+            if (str.length <= 16) return str;
+            const words = str.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+
+            for (let i = 1; i < words.length; i++) {
+                if (currentLine.length + 1 + words[i].length <= 16) {
+                    currentLine += " " + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        // Global Tooltip Callback for Multiline support
+        const globalTooltipPlugins = {
+            tooltip: {
+                callbacks: {
+                    title: function(tooltipItems) {
+                        const item = tooltipItems[0];
+                        let label = item.chart.data.labels[item.dataIndex];
+                        if (Array.isArray(label)) {
+                            return label.join(' ');
+                        } else {
+                            return label;
+                        }
+                    }
+                },
+                backgroundColor: 'rgba(33, 33, 33, 0.9)',
+                padding: 12,
+                cornerRadius: 8,
+            },
+            legend: {
+                labels: {
+                    usePointStyle: true,
+                    padding: 20
+                }
+            }
+        };
+
+        // 1. MACRO CHART (Doughnut)
+        const ctxMacro = document.getElementById('macroChart').getContext('2d');
+        new Chart(ctxMacro, {
+            type: 'doughnut',
+            data: {
+                labels: ['Carbohidratos', 'Proteínas', 'Grasas'],
+                datasets: [{
+                    data: [50, 30, 20],
+                    backgroundColor: ['#FF5722', '#2979FF', '#00E676'],
+                    borderWidth: 0,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: globalTooltipPlugins,
+                cutout: '70%'
+            }
+        });
+
+        // 2. BREAKFAST CHART (Radar)
+        const ctxBreakfast = document.getElementById('breakfastChart').getContext('2d');
+        new Chart(ctxBreakfast, {
+            type: 'radar',
+            data: {
+                labels: ['Proteína', 'Carbohidratos', 'Grasas', 'Fibra', 'Sabor Dulce', 'Sabor Salado'].map(wrapLabel),
+                datasets: [{
+                    label: 'Avena Power',
+                    data: [8, 9, 5, 8, 9, 2],
+                    fill: true,
+                    backgroundColor: 'rgba(255, 87, 34, 0.2)',
+                    borderColor: '#FF5722',
+                    pointBackgroundColor: '#FF5722'
+                }, {
+                    label: 'Omelette & Tostada',
+                    data: [9, 6, 8, 6, 1, 9],
+                    fill: true,
+                    backgroundColor: 'rgba(41, 121, 255, 0.2)',
+                    borderColor: '#2979FF',
+                    pointBackgroundColor: '#2979FF'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: globalTooltipPlugins,
+                scales: {
+                    r: {
+                        angleLines: { color: '#eee' },
+                        grid: { color: '#eee' },
+                        pointLabels: { font: { size: 11, weight: 'bold' } },
+                        suggestedMin: 0,
+                        suggestedMax: 10
+                    }
+                }
+            }
+        });
+
+        // 3. LUNCH CHART (Bar)
+        const ctxLunch = document.getElementById('lunchChart').getContext('2d');
+        new Chart(ctxLunch, {
+            type: 'bar',
+            data: {
+                labels: ['Pollo & Legumbres', 'Carne Asada & Yuca'].map(wrapLabel),
+                datasets: [{
+                    label: 'Proteína (g est.)',
+                    data: [45, 40],
+                    backgroundColor: '#FF5722',
+                    borderRadius: 6
+                }, {
+                    label: 'Carbohidratos (g est.)',
+                    data: [50, 65],
+                    backgroundColor: '#2979FF',
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: globalTooltipPlugins,
+                scales: {
+                    y: { beginAtZero: true, grid: { display: false } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+        // 4. SNACK CHART (Doughnut/Pie hybrid - using Polar Area for variety)
+        const ctxSnack = document.getElementById('snackChart').getContext('2d');
+        new Chart(ctxSnack, {
+            type: 'polarArea',
+            data: {
+                labels: ['Batido (Absorción Rápida)', 'Yogur (Digestión Lenta)'].map(wrapLabel),
+                datasets: [{
+                    data: [90, 75],
+                    backgroundColor: [
+                        'rgba(255, 87, 34, 0.7)',
+                        'rgba(41, 121, 255, 0.7)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: globalTooltipPlugins,
+                scales: {
+                    r: { ticks: { display: false }, grid: { color: '#444' } }
+                }
+            }
+        });
+
+        // 5. DINNER CHART (Horizontal Bar)
+        const ctxDinner = document.getElementById('dinnerChart').getContext('2d');
+        new Chart(ctxDinner, {
+            type: 'bar',
+            data: {
+                labels: ['Pasta con Carne', 'Arepa con Huevo'].map(wrapLabel),
+                datasets: [{
+                    label: 'Indice de Saciedad (1-10)',
+                    data: [8, 9],
+                    backgroundColor: ['#FF5722', '#2979FF'],
+                    borderRadius: 4,
+                    barThickness: 30
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: globalTooltipPlugins.tooltip
+                },
+                scales: {
+                    x: { beginAtZero: true, max: 10 }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
